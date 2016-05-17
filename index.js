@@ -20,15 +20,28 @@ class App extends Component {
   render() {
     return (
       <div>
-        <p>Search for food:</p>
-        <form>
-          <input
-            type="text"
-            value={this.state.searchInput}
-            onChange={this.handleChange} />
-          <button type="submit" onClick={this.handleSearch}>Search</button>
-        </form>
-        <h3>Banana</h3>
+        <nav class="navbar navbar-light bg-faded">
+          <h1 class="navbar-brand">Macro</h1>
+        </nav>
+        <div className="jumbotron">
+          <div className="input-group">
+            <input
+              className="form-control"
+              type="text"
+              value={this.state.searchInput}
+              onChange={this.handleChange}
+              placeholder="Search food name..."/>
+            <span className="input-group-btn">
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={this.handleSearch}>
+                  Search
+              </button>
+            </span>
+          </div>
+          <h3 className="text-center" >{this.state.foodName}</h3>
+        </div>
       </div>
     )
   }
@@ -60,6 +73,9 @@ class App extends Component {
   handleSearch(event) {
     event.preventDefault();
     console.log('perform search', this.state.searchInput);
+    this.setState({
+      foodName: this.state.searchInput,
+    });
     this.searchForFood(this.state.searchInput);
   }
   formatFoodData() {
@@ -105,7 +121,10 @@ class App extends Component {
       .append('g')
       .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
 
+    var donutWidth = 75;
+
     var arc = d3.svg.arc()
+      .innerRadius(radius - donutWidth)
       .outerRadius(radius);
 
     var pie = d3.layout.pie()
@@ -120,6 +139,33 @@ class App extends Component {
       .attr('fill', function(d, i) {
       return color(d.data.label);
     });
+
+    var legendRectSize = 18;
+    var legendSpacing = 4;
+
+    var legend = svg.selectAll('.legend')
+      .data(color.domain())
+      .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function(d, i) {
+        var height = legendRectSize + legendSpacing;
+        var offset =  height * color.domain().length / 2;
+        var horz = -2 * legendRectSize;
+        var vert = i * height - offset;
+        return 'translate(' + horz + ',' + vert + ')';
+      });
+
+    legend.append('rect')
+      .attr('width', legendRectSize)
+      .attr('height', legendRectSize)
+      .style('fill', color)
+      .style('stroke', color);
+
+    legend.append('text')
+      .attr('x', legendRectSize + legendSpacing)
+      .attr('y', legendRectSize - legendSpacing)
+      .text(function(d) { return d; });
   }
 }
 
