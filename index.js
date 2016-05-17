@@ -72,7 +72,6 @@ class App extends Component {
   }
   handleSearch(event) {
     event.preventDefault();
-    console.log('perform search', this.state.searchInput);
     this.setState({
       foodName: this.state.searchInput,
     });
@@ -110,7 +109,8 @@ class App extends Component {
     var height = 360;
     var radius = Math.min(width, height) / 2;
 
-    var color = d3.scale.category20b();
+    var color = d3.scale.ordinal()
+      .range(['#1f77b4', '#9467bd', '#17becf']);
 
     var s = d3.selectAll('svg');
     s = s.remove();
