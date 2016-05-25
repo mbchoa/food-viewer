@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import IngredientsList from './components/IngredientsList';
 import apiHelper from './utils/apiHelper';
 
 class App extends Component {
@@ -21,7 +20,9 @@ class App extends Component {
     return (
       <div>
         <nav class="navbar navbar-light bg-faded">
-          <h1 class="navbar-brand">Macro</h1>
+          <a class="navbar-brand">
+             <h1>Big Mac'ro</h1>
+          </a>
         </nav>
         <div className="jumbotron">
           <div className="input-group">
